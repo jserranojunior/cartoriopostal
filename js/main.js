@@ -175,6 +175,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SiteProg",
   monted: function monted() {
@@ -1388,15 +1419,81 @@ var staticRenderFns = [
     return _c("div", [
       _c("div", { staticClass: "container-fluid" }, [
         _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: " col-8 container-back" }, [
-            _c("div", { staticClass: "row row-space justify-content-center" }, [
-              _c("div", { staticClass: "col-6 text-center" }, [
-                _c("img", {
-                  staticClass: "img-fluid img-center",
-                  attrs: { src: "/img/cartorio-postal.png", alt: "" }
-                })
+          _c("div", { staticClass: " col-6 container-back" }, [
+            _c(
+              "div",
+              {
+                staticClass: "row row-space text-white justify-content-center"
+              },
+              [
+                _c("div", { staticClass: "col-8" }, [
+                  _c("img", {
+                    staticClass: "img-fluid img-center",
+                    attrs: { src: "/img/cartorio-postal.png", alt: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("h1", { staticClass: "text-white text-center" }, [
+                    _vm._v("CONTATO")
+                  ]),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "nome" } }, [_vm._v("Nome")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "Nome" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "nome" } }, [_vm._v("Telefone")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "Telefone" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "nome" } }, [
+                    _vm._v("Produtos e Serviços")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "nome" } }, [
+                    _vm._v("Observação")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "btn btn-primary align-rigth" }, [
+                    _vm._v("ENVIAR")
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "btn btn-success" }, [
+                _vm._v("WHATSAPP")
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row text-center" }, [
+              _c("div", { staticClass: "btn btn-primary" }, [
+                _vm._v("FACEBOOK")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row align-items-center" }, [
+              _c("div", { staticClass: "btn btn-white align-items-center" }, [
+                _vm._v("White")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("h3", { staticClass: "text-white" }, [_vm._v("RUA BRESSER")])
           ])
         ])
       ])
