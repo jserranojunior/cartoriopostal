@@ -195,6 +195,155 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SiteProg",
   monted: function monted() {
@@ -216,7 +365,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100{\n        width: 100%! important;\n}\n.row-space {\n    padding: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100 {\n    width: 100% ! important;\n}\n.row-space {\n    padding: 10px;\n}\n", ""]);
 
 // exports
 
@@ -905,7 +1054,7 @@ var staticRenderFns = [
                 staticClass: "row row-space text-white justify-content-center"
               },
               [
-                _c("div", { staticClass: "col-8" }, [
+                _c("div", { staticClass: "col-10" }, [
                   _c("img", {
                     staticClass: "img-fluid img-center",
                     attrs: { src: "/img/cartorio-postal.png", alt: "" }
@@ -937,6 +1086,352 @@ var staticRenderFns = [
                     staticClass: "form-control",
                     attrs: { type: "text", placeholder: "Produtos e Serviços" }
                   }),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" PESSOA FÍSICA (PF) "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "TRAMITAÇÃO" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
+                    _vm._v(
+                      "TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "protesto" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("PESQUISA SPC, SERASA E PROTESTO")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "debitos" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("PESQUISA DE DÉBITOS DE VEÍCULOS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "dividas" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("NEGOCIAÇÕES DE DÍVIDAS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "pontoscnh" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("PESQUISA DE PONTOS DA CNH")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "imposto" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("ELABORAÇÃO DE IMPOSTO DE RENDA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "decore" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("EMISSÃO DE DECORE")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "bancaria" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "contrato" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(
+                      "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                        E LOCAÇÃO"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "apostilamento" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("APOSTILAMENTO DE HAIA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "juramentada" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("TRADUÇÃO JURAMENTADA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "autenticacao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("AUTENTICAÇÃO DE DOCUMENTOS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "auteracao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("br"),
+                  _c("br"),
+                  _vm._v(" PESSOA JURÍDICA (PJ)"),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "auteracao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "constituicao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "encerramento" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("ALTERAÇÃO E ENCERRAMENTO DE MEI")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "declaracao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("DECLARAÇÃO ANUAL DO MEI")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "emicao" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("EMISSÃO DO DAS DO MEI")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "constituicao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(
+                      " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "constituicao" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(" CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "guias" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "guias" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "estadual" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(" CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "municipal" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "certificado" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("CERTIFICADO DIGITAL")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "nota" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("EMISSÃO DE NOTA FISCAL ELETRÔNICA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "associacoes" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("2ª VIA DE ATA E ESTATUTO DE ASSOCIAÇÕES E IGREJAS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", { attrs: { type: "checkbox", name: "social" } }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("2ª VIA DE CONTRATO SOCIAL")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "empresarios" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("2ª VIA DE REQUERIMENTO DE EMPRESÁRIOS")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "certidoes" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("EMISSÃO DE CERTIDÕES")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "certidoes" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "bancario" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v("CORRESPONDENTE BANCÁRIO")
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "bancario" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(
+                      "PAGAMENTOS DE CONTA, SAQUES E DEPÓSITOS SERVIÇOS GRÁFICOS"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "fotocopias" }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "pesquisa" } }, [
+                    _vm._v(
+                      "CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" XEROX E SCANNER"),
+                  _c("br"),
+                  _c("br"),
                   _vm._v(" "),
                   _c("label", { attrs: { for: "nome" } }, [
                     _vm._v("Observação")

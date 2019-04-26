@@ -16,12 +16,9 @@ class EmailController extends Controller
     
         $dados = ['dados' => $request->all()];
 
-       //return view('emails.bodymails')->with($dados);
-
         Mail::send('emails.bodymails', $dados, function($message){
-            // $message->to('contato@solucaosmart.com');
-            $message->to('contato@solucaosmart.com.br');
-            $message->subject('E-mail enviado pelo site da Solucão Smart');
+            $message->to('jorgeserranojunior@hotmail.com.br');
+            $message->subject('E-mail enviado pelo site do Cartório Postal');
         });
         return response()->json([
             'message' => 'E-mail Enviado',  
@@ -29,34 +26,5 @@ class EmailController extends Controller
         ]);
     }
 
-    public function clube(Request $request){
-    
-        $dados = ['dados' => $request->all()];       
-
-        Mail::send('emails.clube', $dados, function($message){
-            // $message->to('jorgeserranojunior@hotmail.com');
-            $message->to('contato@solucaosmart.com.br');
-            $message->subject('E-mail enviado pelo site da Solucão Smart');
-        });
-        return response()->json([
-            'message' => 'E-mail Enviado',  
-            'data' => ''              
-        ]);
-    }
-
-
-    public function trabalheconosco(Request $request){    
-        $dados = ['dados' => $request->all()];       
-
-        Mail::send('emails.trabalheconosco', $dados, function($message){
-            // $message->to('jorgeserranojunior@hotmail.com');
-            $message->to('contato@solucaosmart.com.br');
-            $message->subject('E-mail enviado pelo site da Solucão Smart');
-        });
-        return response()->json([
-            'message' => 'E-mail Enviado',  
-            'data' => ''              
-        ]);
-    }
 }
 

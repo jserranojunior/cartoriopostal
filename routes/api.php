@@ -31,6 +31,16 @@ Route::group([
 
 );
 
-Route::post('send', 'EmailController@send');
-Route::post('send/clube', 'EmailController@clube');
-Route::post('send/trabalheconosco', 'EmailController@trabalheconosco');
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'email'
+
+], function ($router) {
+
+    Route::post('/contato', 'EmailController@send');
+
+}
+
+);
+
