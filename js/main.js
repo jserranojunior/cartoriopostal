@@ -337,17 +337,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SiteProg",
+  data: function data() {
+    return {
+      fields: {}
+    };
+  },
   monted: function monted() {
     console.log(';funciondn');
+  },
+  methods: {
+    enviarFormulario: function enviarFormulario() {
+      console.log(this.fields);
+    }
   }
 });
 
@@ -365,7 +368,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100 {\n    width: 100% ! important;\n}\n.row-space {\n    padding: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100 {\n    width: 100% ! important;\n}\n.row-space {\n    padding: 10px;\n}\n.section-produtos{\n    /* display:none; */\n}\n.strong{\n}\n\n", ""]);
 
 // exports
 
@@ -1505,62 +1508,130 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: "col-6 container-back" }, [
-            _c(
-              "div",
-              {
-                staticClass: "row row-space text-white justify-content-center"
-              },
-              [
-                _c("div", { staticClass: "col-10" }, [
-                  _c("img", {
-                    staticClass: "img-fluid img-center",
-                    attrs: { src: "/img/cartorio-postal.png", alt: "" }
-                  }),
+  return _c("div", [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-8 container-back" }, [
+          _c(
+            "div",
+            { staticClass: "row row-space text-white justify-content-center" },
+            [
+              _c("div", { staticClass: "col-10" }, [
+                _c("img", {
+                  staticClass: "img-fluid img-center",
+                  attrs: { src: "/img/cartorio-postal.png", alt: "" }
+                }),
+                _vm._v(" "),
+                _c("h2", { staticClass: "text-white text-center" }, [
+                  _vm._v("CONTATO")
+                ]),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "nome" } }, [_vm._v("Nome")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.nome,
+                      expression: "fields.nome"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Nome" },
+                  domProps: { value: _vm.fields.nome },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "nome", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "nome" } }, [_vm._v("Telefone")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.telefone,
+                      expression: "fields.telefone"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Telefone" },
+                  domProps: { value: _vm.fields.telefone },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "telefone", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "nome" } }, [
+                  _vm._v("Produtos e Serviços")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "section-produtos" }, [
+                  _c("br"),
                   _vm._v(" "),
-                  _c("h2", { staticClass: "text-white text-center" }, [
-                    _vm._v("CONTATO")
+                  _c("p", { staticClass: "font-weight-bold" }, [
+                    _vm._v("PESSOA FÍSICA (PF)")
                   ]),
                   _vm._v(" "),
-                  _c("label", { attrs: { for: "nome" } }, [_vm._v("Nome")]),
-                  _vm._v(" "),
                   _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Nome" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "nome" } }, [_vm._v("Telefone")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Telefone" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "nome" } }, [
-                    _vm._v("Produtos e Serviços")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Produtos e Serviços" }
-                  }),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" PESSOA FÍSICA (PF) "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "TRAMITAÇÃO" }
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.fields.tramitacao,
+                        expression: "fields.tramitacao"
+                      }
+                    ],
+                    attrs: {
+                      type: "checkbox",
+                      value: "tramitacao",
+                      name: "TRAMITAÇÃO"
+                    },
+                    domProps: {
+                      checked: Array.isArray(_vm.fields.tramitacao)
+                        ? _vm._i(_vm.fields.tramitacao, "tramitacao") > -1
+                        : _vm.fields.tramitacao
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.fields.tramitacao,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = "tramitacao",
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.fields,
+                                "tramitacao",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.fields,
+                                "tramitacao",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.fields, "tramitacao", $$c)
+                        }
+                      }
+                    }
                   }),
                   _vm._v(" "),
                   _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
@@ -1572,7 +1643,52 @@ var staticRenderFns = [
                   _c("br"),
                   _vm._v(" "),
                   _c("input", {
-                    attrs: { type: "checkbox", name: "protesto" }
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.fields.protesto,
+                        expression: "fields.protesto"
+                      }
+                    ],
+                    attrs: {
+                      type: "checkbox",
+                      value: "protesto",
+                      name: "protesto"
+                    },
+                    domProps: {
+                      checked: Array.isArray(_vm.fields.protesto)
+                        ? _vm._i(_vm.fields.protesto, "protesto") > -1
+                        : _vm.fields.protesto
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.fields.protesto,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = "protesto",
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.fields,
+                                "protesto",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.fields,
+                                "protesto",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.fields, "protesto", $$c)
+                        }
+                      }
+                    }
                   }),
                   _vm._v(" "),
                   _c("label", { attrs: { for: "pesquisa" } }, [
@@ -1639,7 +1755,7 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("label", { attrs: { for: "pesquisa" } }, [
                     _vm._v(
-                      "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                        E LOCAÇÃO"
+                      "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                            E LOCAÇÃO"
                     )
                   ]),
                   _vm._v(" "),
@@ -1685,10 +1801,9 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(" "),
-                  _c("br"),
-                  _c("br"),
-                  _vm._v(" PESSOA JURÍDICA (PJ)"),
-                  _c("br"),
+                  _c("p", { staticClass: "font-weight-bold" }, [
+                    _vm._v("PESSOA JURÍDICA (PJ)")
+                  ]),
                   _vm._v(" "),
                   _c("input", {
                     attrs: { type: "checkbox", name: "auteracao" }
@@ -1862,15 +1977,9 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "bancario" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
+                  _c("p", { staticClass: "font-weight-bold" }, [
                     _vm._v("CORRESPONDENTE BANCÁRIO")
                   ]),
-                  _vm._v(" "),
-                  _c("br"),
                   _vm._v(" "),
                   _c("input", {
                     attrs: { type: "checkbox", name: "bancario" }
@@ -1884,6 +1993,10 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(" "),
+                  _c("p", { staticClass: "font-weight-bold" }, [
+                    _vm._v("SERVIÇOS GRÁFICOS")
+                  ]),
+                  _vm._v(" "),
                   _c("input", {
                     attrs: { type: "checkbox", name: "fotocopias" }
                   }),
@@ -1896,76 +2009,92 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" XEROX E SCANNER"),
-                  _c("br"),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "nome" } }, [
-                    _vm._v("Observação")
+                  _c("p", { staticClass: "font-weight-bold" }, [
+                    _vm._v("XEROX E SCANNER")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Observação" }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row row-space" }, [
-                    _c("div", { staticClass: "col text-right" }, [
-                      _c("div", { staticClass: "btn btn-primary " }, [
-                        _vm._v("ENVIAR")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row row-space" }, [
-                    _c("div", { staticClass: "col text-right" }, [
-                      _c(
-                        "div",
-                        { staticClass: "btn btn-success btn-100 row-space" },
-                        [
-                          _c("i", { staticClass: "fab fa-whatsapp" }),
-                          _vm._v(" 11 95745-9000")
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row row-space" }, [
-                    _c("div", { staticClass: "col text-right" }, [
-                      _c(
-                        "div",
-                        { staticClass: "btn btn-primary btn-100 row-space" },
-                        [
-                          _c("i", { staticClass: "fab fa-facebook-f" }),
-                          _vm._v(".com/cartoriopostalbras")
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row row-space" }, [
-                    _c("div", { staticClass: "col text-right" }, [
-                      _c(
-                        "div",
-                        { staticClass: "btn btn btn-light btn-100 row-space" },
-                        [
-                          _c("i", { staticClass: "far fa-envelope" }),
-                          _vm._v(" contato@cartoriopostalbras.com.br")
-                        ]
-                      )
-                    ])
+                  _c("br")
+                ]),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "nome" } }, [_vm._v("Observação")]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Observação" }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "row row-space" }, [
+                  _c("div", { staticClass: "col text-right" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function($event) {
+                            _vm.enviarFormulario()
+                          }
+                        }
+                      },
+                      [_vm._v("ENVIAR")]
+                    )
                   ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-white text-center" }, [
-              _vm._v("RUA BRESSER, 1235, CEP 03053-000, BRÁS, SÃO PAULO-SP")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row text-center align-items-center" })
-          ])
+                ]),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2)
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("p", { staticClass: "text-white text-center" }, [
+            _vm._v("RUA BRESSER, 1235, CEP 03053-000, BRÁS, SÃO PAULO-SP")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row text-center align-items-center" })
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row row-space" }, [
+      _c("div", { staticClass: "col text-right" }, [
+        _c("div", { staticClass: "btn btn-success btn-100 row-space" }, [
+          _c("i", { staticClass: "fab fa-whatsapp" }),
+          _vm._v(" 11 95745-9000")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row row-space" }, [
+      _c("div", { staticClass: "col text-right" }, [
+        _c("div", { staticClass: "btn btn-primary btn-100 row-space" }, [
+          _c("i", { staticClass: "fab fa-facebook-f" }),
+          _vm._v(".com/cartoriopostalbras")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row row-space" }, [
+      _c("div", { staticClass: "col text-right" }, [
+        _c("div", { staticClass: "btn btn btn-light btn-100 row-space" }, [
+          _c("i", { staticClass: "far fa-envelope" }),
+          _vm._v(" contato@cartoriopostalbras.com.br")
         ])
       ])
     ])
