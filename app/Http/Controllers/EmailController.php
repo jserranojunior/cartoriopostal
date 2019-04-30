@@ -17,7 +17,7 @@ class EmailController extends Controller
         $dados = ['dados' => $request->all()];        
 
         Mail::send('emails.contato', $dados, function($message){
-            $message->to('contato@cartoriopostal.com.br');
+            $message->to('contato@cartoriopostalbras.com.br');
             $message->subject('E-mail enviado pelo site do Cartório Postal');
         });
         return response()->json([
