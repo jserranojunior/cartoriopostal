@@ -12,17 +12,17 @@ class EmailController extends Controller
     }
 
     public function send(Request $request){
+       
+        
+        $dados = ['dados' => $request->all()];        
 
-    
-        $dados = ['dados' => $request->all()];
-
-        Mail::send('emails.bodymails', $dados, function($message){
-            $message->to('jorgeserranojunior@hotmail.com.br');
+        Mail::send('emails.contato', $dados, function($message){
+            $message->to('contato@cartoriopostal.com.br');
             $message->subject('E-mail enviado pelo site do Cartório Postal');
         });
         return response()->json([
             'message' => 'E-mail Enviado',  
-            'data' => ''              
+            'data' => $dados              
         ]);
     }
 

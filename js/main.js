@@ -86,6 +86,1674 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/axios/index.js":
+/*!*************************************!*\
+  !*** ./node_modules/axios/index.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/adapters/xhr.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/adapters/xhr.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
+var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
+var createError = __webpack_require__(/*! ../core/createError */ "./node_modules/axios/lib/core/createError.js");
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ "./node_modules/axios/lib/helpers/btoa.js");
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+    var loadEvent = 'onreadystatechange';
+    var xDomain = false;
+
+    // For IE 8/9 CORS support
+    // Only supports POST and GET calls and doesn't returns the response headers.
+    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+    if ( true &&
+        typeof window !== 'undefined' &&
+        window.XDomainRequest && !('withCredentials' in request) &&
+        !isURLSameOrigin(config.url)) {
+      request = new window.XDomainRequest();
+      loadEvent = 'onload';
+      xDomain = true;
+      request.onprogress = function handleProgress() {};
+      request.ontimeout = function handleTimeout() {};
+    }
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request[loadEvent] = function handleLoad() {
+      if (!request || (request.readyState !== 4 && !xDomain)) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
+        status: request.status === 1223 ? 204 : request.status,
+        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+          cookies.read(config.xsrfCookieName) :
+          undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (config.withCredentials) {
+      request.withCredentials = true;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== 'json') {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/axios.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/axios.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var Axios = __webpack_require__(/*! ./core/Axios */ "./node_modules/axios/lib/core/Axios.js");
+var defaults = __webpack_require__(/*! ./defaults */ "./node_modules/axios/lib/defaults.js");
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Factory for creating new instances
+axios.create = function create(instanceConfig) {
+  return createInstance(utils.merge(defaults, instanceConfig));
+};
+
+// Expose Cancel & CancelToken
+axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
+axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ "./node_modules/axios/lib/cancel/CancelToken.js");
+axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports.default = axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/Cancel.js":
+/*!*************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/CancelToken.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(/*! ./Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/isCancel.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/Axios.js":
+/*!**********************************************!*\
+  !*** ./node_modules/axios/lib/core/Axios.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var defaults = __webpack_require__(/*! ./../defaults */ "./node_modules/axios/lib/defaults.js");
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ "./node_modules/axios/lib/core/InterceptorManager.js");
+var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ "./node_modules/axios/lib/core/dispatchRequest.js");
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === 'string') {
+    config = utils.merge({
+      url: arguments[0]
+    }, arguments[1]);
+  }
+
+  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
+  config.method = config.method.toLowerCase();
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, data, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/InterceptorManager.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/createError.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/createError.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(/*! ./enhanceError */ "./node_modules/axios/lib/core/enhanceError.js");
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/dispatchRequest.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var transformData = __webpack_require__(/*! ./transformData */ "./node_modules/axios/lib/core/transformData.js");
+var isCancel = __webpack_require__(/*! ../cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+var defaults = __webpack_require__(/*! ../defaults */ "./node_modules/axios/lib/defaults.js");
+var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
+var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers || {}
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/enhanceError.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/core/enhanceError.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+module.exports = function enhanceError(error, config, code, request, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+  error.request = request;
+  error.response = response;
+  return error;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/settle.js":
+/*!***********************************************!*\
+  !*** ./node_modules/axios/lib/core/settle.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios/lib/core/createError.js");
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  // Note: status is not exposed by XDomainRequest
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/transformData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/transformData.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/defaults.js":
+/*!********************************************!*\
+  !*** ./node_modules/axios/lib/defaults.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
+var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(/*! ./adapters/xhr */ "./node_modules/axios/lib/adapters/xhr.js");
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(/*! ./adapters/http */ "./node_modules/axios/lib/adapters/xhr.js");
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/bind.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/bind.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/btoa.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/btoa.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+function E() {
+  this.message = 'String contains an invalid character';
+}
+E.prototype = new Error;
+E.prototype.code = 5;
+E.prototype.name = 'InvalidCharacterError';
+
+function btoa(input) {
+  var str = String(input);
+  var output = '';
+  for (
+    // initialize result and counter
+    var block, charCode, idx = 0, map = chars;
+    // if the next str index does not exist:
+    //   change the mapping table to "="
+    //   check if d has no fractional digits
+    str.charAt(idx | 0) || (map = '=', idx % 1);
+    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+  ) {
+    charCode = str.charCodeAt(idx += 3 / 4);
+    if (charCode > 0xFF) {
+      throw new E();
+    }
+    block = block << 8 | charCode;
+  }
+  return output;
+}
+
+module.exports = btoa;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/buildURL.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%40/gi, '@').
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/combineURLs.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/cookies.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/cookies.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs support document.cookie
+  (function standardBrowserEnv() {
+    return {
+      write: function write(name, value, expires, path, domain, secure) {
+        var cookie = [];
+        cookie.push(name + '=' + encodeURIComponent(value));
+
+        if (utils.isNumber(expires)) {
+          cookie.push('expires=' + new Date(expires).toGMTString());
+        }
+
+        if (utils.isString(path)) {
+          cookie.push('path=' + path);
+        }
+
+        if (utils.isString(domain)) {
+          cookie.push('domain=' + domain);
+        }
+
+        if (secure === true) {
+          cookie.push('secure');
+        }
+
+        document.cookie = cookie.join('; ');
+      },
+
+      read: function read(name) {
+        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return (match ? decodeURIComponent(match[3]) : null);
+      },
+
+      remove: function remove(name) {
+        this.write(name, '', Date.now() - 86400000);
+      }
+    };
+  })() :
+
+  // Non standard browser env (web workers, react-native) lack needed support.
+  (function nonStandardBrowserEnv() {
+    return {
+      write: function write() {},
+      read: function read() { return null; },
+      remove: function remove() {}
+    };
+  })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAbsoluteURL.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isURLSameOrigin.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+  (function standardBrowserEnv() {
+    var msie = /(msie|trident)/i.test(navigator.userAgent);
+    var urlParsingNode = document.createElement('a');
+    var originURL;
+
+    /**
+    * Parse a URL to discover it's components
+    *
+    * @param {String} url The URL to be parsed
+    * @returns {Object}
+    */
+    function resolveURL(url) {
+      var href = url;
+
+      if (msie) {
+        // IE needs attribute set twice to normalize properties
+        urlParsingNode.setAttribute('href', href);
+        href = urlParsingNode.href;
+      }
+
+      urlParsingNode.setAttribute('href', href);
+
+      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+                  urlParsingNode.pathname :
+                  '/' + urlParsingNode.pathname
+      };
+    }
+
+    originURL = resolveURL(window.location.href);
+
+    /**
+    * Determine if a URL shares the same origin as the current location
+    *
+    * @param {String} requestURL The URL to test
+    * @returns {boolean} True if URL shares the same origin, otherwise false
+    */
+    return function isURLSameOrigin(requestURL) {
+      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+      return (parsed.protocol === originURL.protocol &&
+            parsed.host === originURL.host);
+    };
+  })() :
+
+  // Non standard browser envs (web workers, react-native) lack needed support.
+  (function nonStandardBrowserEnv() {
+    return function isURLSameOrigin() {
+      return true;
+    };
+  })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/parseHeaders.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  'age', 'authorization', 'content-length', 'content-type', 'etag',
+  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+  'referer', 'retry-after', 'user-agent'
+];
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) { return parsed; }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === 'set-cookie') {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      }
+    }
+  });
+
+  return parsed;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/spread.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/spread.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/utils.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/utils.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var isBuffer = __webpack_require__(/*! is-buffer */ "./node_modules/is-buffer/index.js");
+
+/*global toString:true*/
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return toString.call(val) === '[object Array]';
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+}
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  );
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = merge(result[key], val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/App.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/App.vue?vue&type=script&lang=js& ***!
@@ -118,6 +1786,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -337,19 +2007,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "SiteProg",
+  name: "NovoSite",
   data: function data() {
     return {
-      fields: {}
+      fields: {},
+      produtos: false
     };
   },
   monted: function monted() {
     console.log(';funciondn');
   },
   methods: {
+    openProdutos: function openProdutos() {
+      if (this.produtos) {
+        this.produtos = false;
+      } else {
+        this.produtos = true;
+      }
+    },
     enviarFormulario: function enviarFormulario() {
-      console.log(this.fields);
+      var url = '/api/email/contato';
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, this.fields).then(function (response) {
+        console.log(response.data);
+      }).catch(function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -368,7 +2052,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100 {\n    width: 100% ! important;\n}\n.row-space {\n    padding: 10px;\n}\n.section-produtos{\n    /* display:none; */\n}\n.strong{\n}\n\n", ""]);
+exports.push([module.i, "\n.container-back {\n    background-image: url('/img/postal-fundo.png');\n    background-repeat: no-repeat;\n    background-size: cover;\n}\n.btn-100 {\n    width: 100% ! important;\n}\n.row-space {\n    padding: 10px;\n}\n.section-produtos {\n    /* display:none; */\n}\n.strong {}\n.btn-100 {\n    width: 100%;\n}\n.text-left {\n    text-align: left ! important;\n    float: left;\n}\n.text-right {\n    text-align: right ! important;\n    float: right;\n}\n", ""]);
 
 // exports
 
@@ -457,6 +2141,38 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-buffer/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/is-buffer/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
 
@@ -1574,447 +3290,1834 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("label", { attrs: { for: "nome" } }, [
-                  _vm._v("Produtos e Serviços")
-                ]),
+                _c("br"),
                 _vm._v(" "),
-                _c("div", { staticClass: "section-produtos" }, [
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "font-weight-bold" }, [
-                    _vm._v("PESSOA FÍSICA (PF)")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.fields.tramitacao,
-                        expression: "fields.tramitacao"
-                      }
-                    ],
-                    attrs: {
-                      type: "checkbox",
-                      value: "tramitacao",
-                      name: "TRAMITAÇÃO"
-                    },
-                    domProps: {
-                      checked: Array.isArray(_vm.fields.tramitacao)
-                        ? _vm._i(_vm.fields.tramitacao, "tramitacao") > -1
-                        : _vm.fields.tramitacao
-                    },
+                _c(
+                  "div",
+                  {
+                    staticClass: "btn btn-light btn-100",
                     on: {
-                      change: function($event) {
-                        var $$a = _vm.fields.tramitacao,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = "tramitacao",
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.fields,
-                                "tramitacao",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.fields,
-                                "tramitacao",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(_vm.fields, "tramitacao", $$c)
-                        }
+                      click: function($event) {
+                        _vm.openProdutos()
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
-                    _vm._v(
-                      "TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.fields.protesto,
-                        expression: "fields.protesto"
-                      }
-                    ],
-                    attrs: {
-                      type: "checkbox",
-                      value: "protesto",
-                      name: "protesto"
-                    },
-                    domProps: {
-                      checked: Array.isArray(_vm.fields.protesto)
-                        ? _vm._i(_vm.fields.protesto, "protesto") > -1
-                        : _vm.fields.protesto
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.fields.protesto,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = "protesto",
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.fields,
-                                "protesto",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.fields,
-                                "protesto",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
+                  },
+                  [
+                    _c("span", { staticClass: "text-left" }, [
+                      _vm._v("Produtos e Serviços")
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.produtos
+                  ? _c("div", { staticClass: "section-produtos" }, [
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("PESSOA FÍSICA (PF)")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.tramitacao,
+                            expression: "fields.tramitacao"
                           }
-                        } else {
-                          _vm.$set(_vm.fields, "protesto", $$c)
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "tramitacao",
+                          name: "TRAMITAÇÃO"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.tramitacao)
+                            ? _vm._i(_vm.fields.tramitacao, null) > -1
+                            : _vm._q(_vm.fields.tramitacao, "tramitacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.tramitacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "tramitacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "tramitacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "tramitacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "tramitacao", $$c)
+                            }
+                          }
                         }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("PESQUISA SPC, SERASA E PROTESTO")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "debitos" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("PESQUISA DE DÉBITOS DE VEÍCULOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "dividas" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("NEGOCIAÇÕES DE DÍVIDAS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "pontoscnh" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("PESQUISA DE PONTOS DA CNH")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "imposto" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("ELABORAÇÃO DE IMPOSTO DE RENDA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "decore" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("EMISSÃO DE DECORE")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "bancaria" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "contrato" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(
-                      "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                            E LOCAÇÃO"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "apostilamento" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("APOSTILAMENTO DE HAIA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "juramentada" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("TRADUÇÃO JURAMENTADA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "autenticacao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("AUTENTICAÇÃO DE DOCUMENTOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "auteracao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "font-weight-bold" }, [
-                    _vm._v("PESSOA JURÍDICA (PJ)")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "auteracao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "constituicao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "encerramento" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("ALTERAÇÃO E ENCERRAMENTO DE MEI")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "declaracao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("DECLARAÇÃO ANUAL DO MEI")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "emicao" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("EMISSÃO DO DAS DO MEI")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "constituicao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(
-                      " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "constituicao" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(" CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "guias" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "guias" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "estadual" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(" CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "municipal" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "certificado" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("CERTIFICADO DIGITAL")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "nota" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("EMISSÃO DE NOTA FISCAL ELETRÔNICA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "associacoes" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("2ª VIA DE ATA E ESTATUTO DE ASSOCIAÇÕES E IGREJAS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", { attrs: { type: "checkbox", name: "social" } }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("2ª VIA DE CONTRATO SOCIAL")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "empresarios" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("2ª VIA DE REQUERIMENTO DE EMPRESÁRIOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "certidoes" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("EMISSÃO DE CERTIDÕES")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "certidoes" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "font-weight-bold" }, [
-                    _vm._v("CORRESPONDENTE BANCÁRIO")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "bancario" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(
-                      "PAGAMENTOS DE CONTA, SAQUES E DEPÓSITOS SERVIÇOS GRÁFICOS"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "font-weight-bold" }, [
-                    _vm._v("SERVIÇOS GRÁFICOS")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "checkbox", name: "fotocopias" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "pesquisa" } }, [
-                    _vm._v(
-                      "CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "font-weight-bold" }, [
-                    _vm._v("XEROX E SCANNER")
-                  ]),
-                  _vm._v(" "),
-                  _c("br")
-                ]),
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
+                        _vm._v(
+                          "TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.protesto,
+                            expression: "fields.protesto"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "protesto",
+                          name: "protesto"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.protesto)
+                            ? _vm._i(_vm.fields.protesto, null) > -1
+                            : _vm._q(_vm.fields.protesto, "protesto")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.protesto,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "protesto" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "protesto",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "protesto",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "protesto", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA SPC, SERASA E PROTESTO")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.debitos,
+                            expression: "fields.debitos"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "debitos",
+                          name: "debitos"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.debitos)
+                            ? _vm._i(_vm.fields.debitos, null) > -1
+                            : _vm._q(_vm.fields.debitos, "debitos")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.debitos,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "debitos" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "debitos",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "debitos",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "debitos", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA DE DÉBITOS DE VEÍCULOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.dividas,
+                            expression: "fields.dividas"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "dividas",
+                          name: "dividas"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.dividas)
+                            ? _vm._i(_vm.fields.dividas, null) > -1
+                            : _vm._q(_vm.fields.dividas, "dividas")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.dividas,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "dividas" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "dividas",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "dividas",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "dividas", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("NEGOCIAÇÕES DE DÍVIDAS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.pontoscnh,
+                            expression: "fields.pontoscnh"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "pontoscnh",
+                          name: "pontoscnh"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.pontoscnh)
+                            ? _vm._i(_vm.fields.pontoscnh, null) > -1
+                            : _vm._q(_vm.fields.pontoscnh, "pontoscnh")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.pontoscnh,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "pontoscnh" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "pontoscnh",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "pontoscnh",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "pontoscnh", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA DE PONTOS DA CNH")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.impostos,
+                            expression: "fields.impostos"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "impostos",
+                          name: "imposto"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.impostos)
+                            ? _vm._i(_vm.fields.impostos, null) > -1
+                            : _vm._q(_vm.fields.impostos, "impostos")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.impostos,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "impostos" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "impostos",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "impostos",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "impostos", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("ELABORAÇÃO DE IMPOSTO DE RENDA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.decore,
+                            expression: "fields.decore"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "decore",
+                          name: "decore"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.decore)
+                            ? _vm._i(_vm.fields.decore, null) > -1
+                            : _vm._q(_vm.fields.decore, "decore")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.decore,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "decore" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "decore",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "decore",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "decore", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DE DECORE")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.bancaria,
+                            expression: "fields.bancaria"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "bancaria",
+                          name: "bancaria"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.bancaria)
+                            ? _vm._i(_vm.fields.bancaria, null) > -1
+                            : _vm._q(_vm.fields.bancaria, "bancaria")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.bancaria,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "bancaria" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "bancaria",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "bancaria",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "bancaria", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.contrato,
+                            expression: "fields.contrato"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "contrato",
+                          name: "contrato"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.contrato)
+                            ? _vm._i(_vm.fields.contrato, null) > -1
+                            : _vm._q(_vm.fields.contrato, "contrato")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.contrato,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "contrato" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "contrato",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "contrato",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "contrato", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                                E LOCAÇÃO"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.apostila,
+                            expression: "fields.apostila"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "apostila",
+                          name: "apostilamento"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.apostila)
+                            ? _vm._i(_vm.fields.apostila, null) > -1
+                            : _vm._q(_vm.fields.apostila, "apostila")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.apostila,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "apostila" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "apostila",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "apostila",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "apostila", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("APOSTILAMENTO DE HAIA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.juramentada,
+                            expression: "fields.juramentada"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "juramentada",
+                          name: "juramentada"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.juramentada)
+                            ? _vm._i(_vm.fields.juramentada, null) > -1
+                            : _vm._q(_vm.fields.juramentada, "juramentada")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.juramentada,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "juramentada" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "juramentada",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "juramentada",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "juramentada", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("TRADUÇÃO JURAMENTADA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.autenticacao,
+                            expression: "fields.autenticacao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "autenticacao",
+                          name: "autenticacao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.autenticacao)
+                            ? _vm._i(_vm.fields.autenticacao, null) > -1
+                            : _vm._q(_vm.fields.autenticacao, "autenticacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.autenticacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "autenticacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "autenticacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "autenticacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "autenticacao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("AUTENTICAÇÃO DE DOCUMENTOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.auteracao,
+                            expression: "fields.auteracao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "auteracao",
+                          name: "auteracao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.auteracao)
+                            ? _vm._i(_vm.fields.auteracao, null) > -1
+                            : _vm._q(_vm.fields.auteracao, "auteracao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.auteracao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "auteracao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "auteracao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "auteracao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "auteracao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("PESSOA JURÍDICA (PJ)")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.constituicao,
+                            expression: "fields.constituicao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "constituicao",
+                          name: "constituicao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.constituicao)
+                            ? _vm._i(_vm.fields.constituicao, null) > -1
+                            : _vm._q(_vm.fields.constituicao, "constituicao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.constituicao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "constituicao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "constituicao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "constituicao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "constituicao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.encerramento,
+                            expression: "fields.encerramento"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "encerramento",
+                          name: "encerramento"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.encerramento)
+                            ? _vm._i(_vm.fields.encerramento, null) > -1
+                            : _vm._q(_vm.fields.encerramento, "encerramento")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.encerramento,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "encerramento" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "encerramento",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "encerramento",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "encerramento", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("ALTERAÇÃO E ENCERRAMENTO DE MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.declaracao,
+                            expression: "fields.declaracao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "declaracao",
+                          name: "declaracao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.declaracao)
+                            ? _vm._i(_vm.fields.declaracao, null) > -1
+                            : _vm._q(_vm.fields.declaracao, "declaracao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.declaracao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "declaracao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "declaracao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "declaracao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "declaracao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("DECLARAÇÃO ANUAL DO MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.emicao,
+                            expression: "fields.emicao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "emicao",
+                          name: "emicao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.emicao)
+                            ? _vm._i(_vm.fields.emicao, null) > -1
+                            : _vm._q(_vm.fields.emicao, "emicao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.emicao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "emicao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "emicao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "emicao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "emicao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DO DAS DO MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.associacoes,
+                            expression: "fields.associacoes"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "associacoes",
+                          name: "associacoes"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.associacoes)
+                            ? _vm._i(_vm.fields.associacoes, null) > -1
+                            : _vm._q(_vm.fields.associacoes, "associacoes")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.associacoes,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "associacoes" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "associacoes",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "associacoes",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "associacoes", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.igrejas,
+                            expression: "fields.igrejas"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "igrejas",
+                          name: "igrejas"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.igrejas)
+                            ? _vm._i(_vm.fields.igrejas, null) > -1
+                            : _vm._q(_vm.fields.igrejas, "igrejas")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.igrejas,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "igrejas" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "igrejas",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "igrejas",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "igrejas", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.guias,
+                            expression: "fields.guias"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "guias",
+                          name: "guias"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.guias)
+                            ? _vm._i(_vm.fields.guias, null) > -1
+                            : _vm._q(_vm.fields.guias, "guias")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.guias,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "guias" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "guias",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "guias",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "guias", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.estadual,
+                            expression: "fields.estadual"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "estadual",
+                          name: "estadual"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.estadual)
+                            ? _vm._i(_vm.fields.estadual, null) > -1
+                            : _vm._q(_vm.fields.estadual, "estadual")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.estadual,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "estadual" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estadual",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estadual",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "estadual", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.municipal,
+                            expression: "fields.municipal"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "municipal",
+                          name: "municipal"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.municipal)
+                            ? _vm._i(_vm.fields.municipal, null) > -1
+                            : _vm._q(_vm.fields.municipal, "municipal")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.municipal,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "municipal" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "municipal",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "municipal",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "municipal", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.certificado,
+                            expression: "fields.certificado"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "certificado",
+                          name: "certificado"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.certificado)
+                            ? _vm._i(_vm.fields.certificado, null) > -1
+                            : _vm._q(_vm.fields.certificado, "certificado")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.certificado,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "certificado" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certificado",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certificado",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "certificado", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("CERTIFICADO DIGITAL")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.nota,
+                            expression: "fields.nota"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "nota",
+                          name: "nota"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.nota)
+                            ? _vm._i(_vm.fields.nota, null) > -1
+                            : _vm._q(_vm.fields.nota, "nota")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.nota,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "nota" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "nota",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "nota",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "nota", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DE NOTA FISCAL ELETRÔNICA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.estatuto,
+                            expression: "fields.estatuto"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "estatuto",
+                          name: "estatuto"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.estatuto)
+                            ? _vm._i(_vm.fields.estatuto, null) > -1
+                            : _vm._q(_vm.fields.estatuto, "estatuto")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.estatuto,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "estatuto" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estatuto",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estatuto",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "estatuto", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "2ª VIA DE ATA E ESTATUTO DE ASSOCIAÇÕES E IGREJAS"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.social,
+                            expression: "fields.social"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "social",
+                          name: "social"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.social)
+                            ? _vm._i(_vm.fields.social, null) > -1
+                            : _vm._q(_vm.fields.social, "social")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.social,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "social" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "social",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "social",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "social", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("2ª VIA DE CONTRATO SOCIAL")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.empresarios,
+                            expression: "fields.empresarios"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "empresarios",
+                          name: "empresarios"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.empresarios)
+                            ? _vm._i(_vm.fields.empresarios, null) > -1
+                            : _vm._q(_vm.fields.empresarios, "empresarios")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.empresarios,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "empresarios" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "empresarios",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "empresarios",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "empresarios", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("2ª VIA DE REQUERIMENTO DE EMPRESÁRIOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.certidoes,
+                            expression: "fields.certidoes"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "certidoes",
+                          name: "certidoes"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.certidoes)
+                            ? _vm._i(_vm.fields.certidoes, null) > -1
+                            : _vm._q(_vm.fields.certidoes, "certidoes")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.certidoes,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "certidoes" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certidoes",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certidoes",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "certidoes", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DE CERTIDÕES")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.viabilizacao,
+                            expression: "fields.viabilizacao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "viabilizacao",
+                          name: "viabilizacao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.viabilizacao)
+                            ? _vm._i(_vm.fields.viabilizacao, null) > -1
+                            : _vm._q(_vm.fields.viabilizacao, "viabilizacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.viabilizacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "viabilizacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "viabilizacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "viabilizacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "viabilizacao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("CORRESPONDENTE BANCÁRIO")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.bancario,
+                            expression: "fields.bancario"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "bancario",
+                          name: "bancario"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.bancario)
+                            ? _vm._i(_vm.fields.bancario, null) > -1
+                            : _vm._q(_vm.fields.bancario, "bancario")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.bancario,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "bancario" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "bancario",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "bancario",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "bancario", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "PAGAMENTOS DE CONTA, SAQUES E DEPÓSITOS SERVIÇOS GRÁFICOS"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("SERVIÇOS GRÁFICOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.folhetos,
+                            expression: "fields.folhetos"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "folhetos",
+                          name: "folhetos"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.folhetos)
+                            ? _vm._i(_vm.fields.folhetos, null) > -1
+                            : _vm._q(_vm.fields.folhetos, "folhetos")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.folhetos,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "folhetos" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "folhetos",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "folhetos",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "folhetos", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("FOTOCÓPIAS")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.xeros,
+                            expression: "fields.xeros"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "xeros",
+                          name: "xeros"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.xeros)
+                            ? _vm._i(_vm.fields.xeros, null) > -1
+                            : _vm._q(_vm.fields.xeros, "xeros")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.xeros,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "xeros" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "xeros",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "xeros",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "xeros", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("XÉROS E SCANNER")
+                      ]),
+                      _vm._v(" "),
+                      _c("br")
+                    ])
+                  : _vm._e(),
+                _c("br"),
                 _vm._v(" "),
                 _c("label", { attrs: { for: "nome" } }, [_vm._v("Observação")]),
                 _vm._v(" "),
@@ -2040,11 +5143,11 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(0),
-                _vm._v(" "),
                 _vm._m(1),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(2),
+                _vm._v(" "),
+                _vm._m(3)
               ])
             ]
           ),
@@ -2060,6 +5163,14 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-right" }, [
+      _c("i", { staticClass: "text-right fas fa-angle-down" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -17134,38 +20245,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/SiteProg.vue":
-/*!**********************************************!*\
-  !*** ./resources/js/components/SiteProg.vue ***!
-  \**********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-var render, staticRenderFns
-var script = {}
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
-  script,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-component.options.__file = "resources/js/components/SiteProg.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/main.js":
 /*!******************************!*\
   !*** ./resources/js/main.js ***!
@@ -17215,17 +20294,11 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_NovoSite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/NovoSite */ "./resources/js/components/NovoSite.vue");
-/* harmony import */ var _components_SiteProg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/SiteProg */ "./resources/js/components/SiteProg.vue");
-
 
 var routes = [{
   path: '/',
   name: 'novosite',
   component: _components_NovoSite__WEBPACK_IMPORTED_MODULE_0__["default"]
-}, {
-  path: '/siteprog',
-  name: 'siteprog',
-  component: _components_SiteProg__WEBPACK_IMPORTED_MODULE_1__["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (routes);
 
