@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contato@solucaosmart.com'),
-        'name' => env('MAIL_FROM_NAME', 'Contato Smart'),
+        'address' => 'contato@cartoriopostalbras.com.br',
+        'name' => 'Cartório'
     ],
 
     /*
