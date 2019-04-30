@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/email', function(){
-    $link = "https://mail.zoho.com/zm/#mail/folder/inbox";
+    $link = "https://accounts.zoho.com/signin?servicename=VirtualOffice&signupurl=https://www.zoho.com//workplace/pricing.html?src=zmail-signup&serviceurl=https%3A%2F%2Fmail.zoho.com%2Fzm%2F";
     return Redirect::to($link);
 });
 
