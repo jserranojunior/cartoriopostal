@@ -4849,8 +4849,29 @@ var render = function() {
                 _c("label", { attrs: { for: "nome" } }, [_vm._v("Observação")]),
                 _vm._v(" "),
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.observacao,
+                      expression: "fields.observacao"
+                    }
+                  ],
                   staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Observação" }
+                  attrs: {
+                    type: "text",
+                    "true-value": "observacao",
+                    placeholder: "Observação"
+                  },
+                  domProps: { value: _vm.fields.observacao },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "observacao", $event.target.value)
+                    }
+                  }
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "row row-space" }, [

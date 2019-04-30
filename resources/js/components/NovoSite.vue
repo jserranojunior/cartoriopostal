@@ -175,7 +175,7 @@
                             </div><br>
     
                             <label for="nome">Observação</label>
-                            <input type="text" class="form-control" placeholder="Observação">
+                            <input type="text"  true-value="observacao" v-model="fields.observacao"  class="form-control" placeholder="Observação">
     
                             <div class="row row-space">
                                 <div class="col text-right">

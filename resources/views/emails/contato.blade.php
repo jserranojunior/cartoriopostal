@@ -46,6 +46,8 @@ Produtos e Serviços a qual desejo:<br><br>
 @if(isset($dados['folhetos'])) CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS <br> @endif 
 @if(isset($dados['XEROS'])) XÉROS E SCANNER <br> @endif 
 
+Observação: @if(isset($dados['observacao'])) {{$dados['observacao']}} @endif <br><br>
+
 
 <br>
 <br>
