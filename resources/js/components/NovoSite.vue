@@ -20,120 +20,14 @@
                             <div class="btn btn-light btn-100" @click="openProdutos()">
                                 <span class="text-left">Produtos e Serviços</span>
                                 <span class="text-right">
-                                        <i class="text-right fas fa-angle-down">
-                                        </i>
-                                        </span>
+                                            <i class="text-right fas fa-angle-down">
+                                            </i>
+                                            </span>
                             </div>
                             <!-- <input type="text" class="form-control" placeholder="Produtos e Serviços"> -->
     
     
                             <div class="section-produtos" v-if="produtos">
-                                <br>
-                                <p class="font-weight-bold">PESSOA FÍSICA (PF)</p>
-    
-    
-                                <input type="checkbox" true-value="tramitacao" v-model="fields.tramitacao" name="TRAMITAÇÃO">
-                                <label for="TRAMITAÇÃO">TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO</label>
-                                <br>
-    
-    
-                                <input type="checkbox" true-value="protesto" v-model="fields.protesto" name="protesto">
-                                <label for="pesquisa">PESQUISA SPC, SERASA E PROTESTO</label>
-                                <br>
-    
-    
-                                <input type="checkbox" true-value="debitos" v-model="fields.debitos" name="debitos">
-                                <label for="pesquisa">PESQUISA DE DÉBITOS DE VEÍCULOS</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="dividas" v-model="fields.dividas" name="dividas">
-                                <label for="pesquisa">NEGOCIAÇÕES DE DÍVIDAS</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="pontoscnh" v-model="fields.pontoscnh" name="pontoscnh">
-                                <label for="pesquisa">PESQUISA DE PONTOS DA CNH</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="impostos" v-model="fields.impostos" name="imposto">
-                                <label for="pesquisa">ELABORAÇÃO DE IMPOSTO DE RENDA</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="decore" v-model="fields.decore" name="decore">
-                                <label for="pesquisa">EMISSÃO DE DECORE</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="bancaria" v-model="fields.bancaria" name="bancaria">
-                                <label for="pesquisa">VIABILIZAÇÃO DE CONTA BANCÁRIA</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="contrato" v-model="fields.contrato" name="contrato">
-                                <label for="pesquisa">ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA
-                                    E LOCAÇÃO</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="apostila" v-model="fields.apostila" name="apostilamento">
-                                <label for="pesquisa">APOSTILAMENTO DE HAIA</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="juramentada" v-model="fields.juramentada" name="juramentada">
-                                <label for="pesquisa">TRADUÇÃO JURAMENTADA</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="autenticacao" v-model="fields.autenticacao" name="autenticacao">
-                                <label for="pesquisa">AUTENTICAÇÃO DE DOCUMENTOS</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="auteracao" v-model="fields.auteracao" name="auteracao">
-                                <label for="pesquisa">ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)</label>
-                                <br>
-    
-    
-                                <p class="font-weight-bold">PESSOA JURÍDICA (PJ)</p>
-    
-                                <input type="checkbox" true-value="constituicao" v-model="fields.constituicao" name="constituicao">
-                                <label for="pesquisa">CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="encerramento" v-model="fields.encerramento" name="encerramento">
-                                <label for="pesquisa">ALTERAÇÃO E ENCERRAMENTO DE MEI</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="declaracao" v-model="fields.declaracao" name="declaracao">
-                                <label for="pesquisa">DECLARAÇÃO ANUAL DO MEI</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="emicao" v-model="fields.emicao" name="emicao">
-                                <label for="pesquisa">EMISSÃO DO DAS DO MEI</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="associacoes" v-model="fields.associacoes" name="associacoes">
-                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="igrejas" v-model="fields.igrejas" name="igrejas">
-                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="guias" v-model="fields.guias" name="guias">
-                                <label for="pesquisa"> EMISSÃO DE GUIAS DE IMPOSTOS</label>
-                                <br>
-    
-    
-    
-                                <input type="checkbox" true-value="estadual" v-model="fields.estadual" name="estadual">
-                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="municipal" v-model="fields.municipal" name="municipal">
-                                <label for="pesquisa">CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="certificado" v-model="fields.certificado" name="certificado">
-                                <label for="pesquisa">CERTIFICADO DIGITAL</label>
-                                <br>
-    
-                                <input type="checkbox" true-value="nota" v-model="fields.nota" name="nota">
-                                <label for="pesquisa">EMISSÃO DE NOTA FISCAL ELETRÔNICA</label>
                                 <br>
     
                                 <input type="checkbox" true-value="estatuto" v-model="fields.estatuto" name="estatuto">
@@ -148,34 +42,146 @@
                                 <label for="pesquisa">2ª VIA DE REQUERIMENTO DE EMPRESÁRIOS</label>
                                 <br>
     
+                               
+    
+                                <input type="checkbox" true-value="auteracao" v-model="fields.auteracao" name="auteracao">
+                                <label for="pesquisa">ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="encerramento" v-model="fields.encerramento" name="encerramento">
+                                <label for="pesquisa">ALTERAÇÃO E ENCERRAMENTO DE MEI</label>
+                                <br>
+
+                                 <input type="checkbox" true-value="apostila" v-model="fields.apostila" name="apostilamento">
+                                <label for="pesquisa">APOSTILAMENTO DE HAIA</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="autenticacao" v-model="fields.autenticacao" name="autenticacao">
+                                <label for="pesquisa">AUTENTICAÇÃO DE DOCUMENTOS</label>
+                                <br>
+    
+    
+    <input type="checkbox" true-value="certificado" v-model="fields.certificado" name="certificado">
+                                <label for="pesquisa">CERTIFICADO DIGITAL</label>
+                                <br>
+    
+
+                                <input type="checkbox" true-value="estadual" v-model="fields.estadual" name="estadual">
+                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="municipal" v-model="fields.municipal" name="municipal">
+                                <label for="pesquisa">CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL</label>
+                                <br>
+    
+                                
+    
+                                <input type="checkbox" true-value="associacoes" v-model="fields.associacoes" name="associacoes">
+                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="igrejas" v-model="fields.igrejas" name="igrejas">
+                                <label for="pesquisa"> CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS</label>
+                                <br>
+    
+    
+    
+                                <input type="checkbox" true-value="constituicao" v-model="fields.constituicao" name="constituicao">
+                                <label for="pesquisa">CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ</label>
+                                <br>
+    
+    
+    
+                                <input type="checkbox" true-value="declaracao" v-model="fields.declaracao" name="declaracao">
+                                <label for="pesquisa">DECLARAÇÃO ANUAL DO MEI</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="nota" v-model="fields.nota" name="nota">
+                                <label for="pesquisa">EMISSÃO DE NOTA FISCAL ELETRÔNICA</label>
+                                <br>
+    
+    
+    
                                 <input type="checkbox" true-value="certidoes" v-model="fields.certidoes" name="certidoes">
                                 <label for="pesquisa">EMISSÃO DE CERTIDÕES</label>
                                 <br>
+    
+                                <input type="checkbox" true-value="impostos" v-model="fields.impostos" name="imposto">
+                                <label for="pesquisa">ELABORAÇÃO DE IMPOSTO DE RENDA</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="decore" v-model="fields.decore" name="decore">
+                                <label for="pesquisa">EMISSÃO DE DECORE</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="contrato" v-model="fields.contrato" name="contrato">
+                                <label for="pesquisa">ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA
+                                        E LOCAÇÃO</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="emicao" v-model="fields.emicao" name="emicao">
+                                <label for="pesquisa">EMISSÃO DO DAS DO MEI</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="guias" v-model="fields.guias" name="guias">
+                                <label for="pesquisa"> EMISSÃO DE GUIAS DE IMPOSTOS</label>
+                                <br>
+    
+    
+    
+                                <input type="checkbox" true-value="dividas" v-model="fields.dividas" name="dividas">
+                                <label for="pesquisa">NEGOCIAÇÕES DE DÍVIDAS</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="protesto" v-model="fields.protesto" name="protesto">
+                                <label for="pesquisa">PESQUISA SPC, SERASA E PROTESTO</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="pontoscnh" v-model="fields.pontoscnh" name="pontoscnh">
+                                <label for="pesquisa">PESQUISA DE PONTOS DA CNH</label>
+                                <br>
+    
+                                <input type="checkbox" true-value="debitos" v-model="fields.debitos" name="debitos">
+                                <label for="pesquisa">PESQUISA DE DÉBITOS DE VEÍCULOS</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="bancario" v-model="fields.bancario" name="bancario">
+                                <label for="pesquisa">PAGAMENTOS DE CONTA, SAQUES E DEPÓSITOS SERVIÇOS GRÁFICOS</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="juramentada" v-model="fields.juramentada" name="juramentada">
+                                <label for="pesquisa">TRADUÇÃO JURAMENTADA</label>
+                                <br>
+    
+    
+                                <input type="checkbox" true-value="tramitacao" v-model="fields.tramitacao" name="TRAMITAÇÃO">
+                                <label for="TRAMITAÇÃO">TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO</label>
+                                <br>
+    
+    
+    
+    
+                                <input type="checkbox" true-value="bancaria" v-model="fields.bancaria" name="bancaria">
+                                <label for="pesquisa">VIABILIZAÇÃO DE CONTA BANCÁRIA</label>
+                                <br>
+    
     
                                 <input type="checkbox" true-value="viabilizacao" v-model="fields.viabilizacao" name="viabilizacao">
                                 <label for="pesquisa">VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA</label>
                                 <br>
     
     
-                                <p class="font-weight-bold">CORRESPONDENTE BANCÁRIO</p>
-                                <input type="checkbox" true-value="bancario" v-model="fields.bancario" name="bancario">
-                                <label for="pesquisa">PAGAMENTOS DE CONTA, SAQUES E DEPÓSITOS SERVIÇOS GRÁFICOS</label>
-                                <br><br>
-    
-                                <p class="font-weight-bold">SERVIÇOS GRÁFICOS</p>
-                                <input type="checkbox" true-value="folhetos" v-model="fields.folhetos" name="folhetos">
-                                <label for="pesquisa">CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS</label>
-                                <br> <br>
-    
-                                <p class="font-weight-bold">FOTOCÓPIAS</p>
-                                <input type="checkbox" true-value="xeros" v-model="fields.xeros" name="xeros">
-                                <label for="pesquisa">XÉROS E SCANNER</label>
-                                <br>
     
                             </div><br>
     
                             <label for="nome">Observação</label>
-                            <input type="text"  true-value="observacao" v-model="fields.observacao"  class="form-control" placeholder="Observação">
+                            <input type="text" true-value="observacao" v-model="fields.observacao" class="form-control" placeholder="Observação">
     
                             <div class="row row-space">
                                 <div class="col text-right">
@@ -232,12 +238,12 @@ export default {
     },
     methods: {
         openProdutos() {
-            if(this.produtos){
+            if (this.produtos) {
                 this.produtos = false;
-            }else{
-                this.produtos = true;    
+            } else {
+                this.produtos = true;
             }
-            
+
         },
         enviarFormulario() {
             let url = '/api/email/contato';

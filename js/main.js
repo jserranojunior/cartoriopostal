@@ -2007,6 +2007,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NovoSite",
@@ -3315,1346 +3321,6 @@ var render = function() {
                   ? _c("div", { staticClass: "section-produtos" }, [
                       _c("br"),
                       _vm._v(" "),
-                      _c("p", { staticClass: "font-weight-bold" }, [
-                        _vm._v("PESSOA FÍSICA (PF)")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.tramitacao,
-                            expression: "fields.tramitacao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "tramitacao",
-                          name: "TRAMITAÇÃO"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.tramitacao)
-                            ? _vm._i(_vm.fields.tramitacao, null) > -1
-                            : _vm._q(_vm.fields.tramitacao, "tramitacao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.tramitacao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "tramitacao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "tramitacao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "tramitacao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "tramitacao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
-                        _vm._v(
-                          "TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.protesto,
-                            expression: "fields.protesto"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "protesto",
-                          name: "protesto"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.protesto)
-                            ? _vm._i(_vm.fields.protesto, null) > -1
-                            : _vm._q(_vm.fields.protesto, "protesto")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.protesto,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "protesto" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "protesto",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "protesto",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "protesto", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("PESQUISA SPC, SERASA E PROTESTO")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.debitos,
-                            expression: "fields.debitos"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "debitos",
-                          name: "debitos"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.debitos)
-                            ? _vm._i(_vm.fields.debitos, null) > -1
-                            : _vm._q(_vm.fields.debitos, "debitos")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.debitos,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "debitos" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "debitos",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "debitos",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "debitos", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("PESQUISA DE DÉBITOS DE VEÍCULOS")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.dividas,
-                            expression: "fields.dividas"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "dividas",
-                          name: "dividas"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.dividas)
-                            ? _vm._i(_vm.fields.dividas, null) > -1
-                            : _vm._q(_vm.fields.dividas, "dividas")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.dividas,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "dividas" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "dividas",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "dividas",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "dividas", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("NEGOCIAÇÕES DE DÍVIDAS")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.pontoscnh,
-                            expression: "fields.pontoscnh"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "pontoscnh",
-                          name: "pontoscnh"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.pontoscnh)
-                            ? _vm._i(_vm.fields.pontoscnh, null) > -1
-                            : _vm._q(_vm.fields.pontoscnh, "pontoscnh")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.pontoscnh,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "pontoscnh" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "pontoscnh",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "pontoscnh",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "pontoscnh", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("PESQUISA DE PONTOS DA CNH")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.impostos,
-                            expression: "fields.impostos"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "impostos",
-                          name: "imposto"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.impostos)
-                            ? _vm._i(_vm.fields.impostos, null) > -1
-                            : _vm._q(_vm.fields.impostos, "impostos")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.impostos,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "impostos" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "impostos",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "impostos",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "impostos", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("ELABORAÇÃO DE IMPOSTO DE RENDA")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.decore,
-                            expression: "fields.decore"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "decore",
-                          name: "decore"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.decore)
-                            ? _vm._i(_vm.fields.decore, null) > -1
-                            : _vm._q(_vm.fields.decore, "decore")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.decore,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "decore" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "decore",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "decore",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "decore", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("EMISSÃO DE DECORE")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.bancaria,
-                            expression: "fields.bancaria"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "bancaria",
-                          name: "bancaria"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.bancaria)
-                            ? _vm._i(_vm.fields.bancaria, null) > -1
-                            : _vm._q(_vm.fields.bancaria, "bancaria")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.bancaria,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "bancaria" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "bancaria",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "bancaria",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "bancaria", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.contrato,
-                            expression: "fields.contrato"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "contrato",
-                          name: "contrato"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.contrato)
-                            ? _vm._i(_vm.fields.contrato, null) > -1
-                            : _vm._q(_vm.fields.contrato, "contrato")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.contrato,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "contrato" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "contrato",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "contrato",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "contrato", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(
-                          "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                                E LOCAÇÃO"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.apostila,
-                            expression: "fields.apostila"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "apostila",
-                          name: "apostilamento"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.apostila)
-                            ? _vm._i(_vm.fields.apostila, null) > -1
-                            : _vm._q(_vm.fields.apostila, "apostila")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.apostila,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "apostila" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "apostila",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "apostila",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "apostila", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("APOSTILAMENTO DE HAIA")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.juramentada,
-                            expression: "fields.juramentada"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "juramentada",
-                          name: "juramentada"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.juramentada)
-                            ? _vm._i(_vm.fields.juramentada, null) > -1
-                            : _vm._q(_vm.fields.juramentada, "juramentada")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.juramentada,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "juramentada" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "juramentada",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "juramentada",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "juramentada", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("TRADUÇÃO JURAMENTADA")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.autenticacao,
-                            expression: "fields.autenticacao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "autenticacao",
-                          name: "autenticacao"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.autenticacao)
-                            ? _vm._i(_vm.fields.autenticacao, null) > -1
-                            : _vm._q(_vm.fields.autenticacao, "autenticacao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.autenticacao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "autenticacao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "autenticacao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "autenticacao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "autenticacao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("AUTENTICAÇÃO DE DOCUMENTOS")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.auteracao,
-                            expression: "fields.auteracao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "auteracao",
-                          name: "auteracao"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.auteracao)
-                            ? _vm._i(_vm.fields.auteracao, null) > -1
-                            : _vm._q(_vm.fields.auteracao, "auteracao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.auteracao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "auteracao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "auteracao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "auteracao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "auteracao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "font-weight-bold" }, [
-                        _vm._v("PESSOA JURÍDICA (PJ)")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.constituicao,
-                            expression: "fields.constituicao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "constituicao",
-                          name: "constituicao"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.constituicao)
-                            ? _vm._i(_vm.fields.constituicao, null) > -1
-                            : _vm._q(_vm.fields.constituicao, "constituicao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.constituicao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "constituicao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "constituicao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "constituicao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "constituicao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.encerramento,
-                            expression: "fields.encerramento"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "encerramento",
-                          name: "encerramento"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.encerramento)
-                            ? _vm._i(_vm.fields.encerramento, null) > -1
-                            : _vm._q(_vm.fields.encerramento, "encerramento")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.encerramento,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "encerramento" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "encerramento",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "encerramento",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "encerramento", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("ALTERAÇÃO E ENCERRAMENTO DE MEI")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.declaracao,
-                            expression: "fields.declaracao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "declaracao",
-                          name: "declaracao"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.declaracao)
-                            ? _vm._i(_vm.fields.declaracao, null) > -1
-                            : _vm._q(_vm.fields.declaracao, "declaracao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.declaracao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "declaracao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "declaracao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "declaracao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "declaracao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("DECLARAÇÃO ANUAL DO MEI")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.emicao,
-                            expression: "fields.emicao"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "emicao",
-                          name: "emicao"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.emicao)
-                            ? _vm._i(_vm.fields.emicao, null) > -1
-                            : _vm._q(_vm.fields.emicao, "emicao")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.emicao,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "emicao" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "emicao",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "emicao",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "emicao", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("EMISSÃO DO DAS DO MEI")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.associacoes,
-                            expression: "fields.associacoes"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "associacoes",
-                          name: "associacoes"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.associacoes)
-                            ? _vm._i(_vm.fields.associacoes, null) > -1
-                            : _vm._q(_vm.fields.associacoes, "associacoes")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.associacoes,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "associacoes" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "associacoes",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "associacoes",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "associacoes", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(
-                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.igrejas,
-                            expression: "fields.igrejas"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "igrejas",
-                          name: "igrejas"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.igrejas)
-                            ? _vm._i(_vm.fields.igrejas, null) > -1
-                            : _vm._q(_vm.fields.igrejas, "igrejas")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.igrejas,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "igrejas" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "igrejas",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "igrejas",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "igrejas", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(
-                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.guias,
-                            expression: "fields.guias"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "guias",
-                          name: "guias"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.guias)
-                            ? _vm._i(_vm.fields.guias, null) > -1
-                            : _vm._q(_vm.fields.guias, "guias")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.guias,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "guias" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "guias",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "guias",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "guias", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.estadual,
-                            expression: "fields.estadual"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "estadual",
-                          name: "estadual"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.estadual)
-                            ? _vm._i(_vm.fields.estadual, null) > -1
-                            : _vm._q(_vm.fields.estadual, "estadual")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.estadual,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "estadual" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "estadual",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "estadual",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "estadual", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(
-                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.municipal,
-                            expression: "fields.municipal"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "municipal",
-                          name: "municipal"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.municipal)
-                            ? _vm._i(_vm.fields.municipal, null) > -1
-                            : _vm._q(_vm.fields.municipal, "municipal")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.municipal,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "municipal" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "municipal",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "municipal",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "municipal", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v(
-                          "CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.certificado,
-                            expression: "fields.certificado"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "certificado",
-                          name: "certificado"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.certificado)
-                            ? _vm._i(_vm.fields.certificado, null) > -1
-                            : _vm._q(_vm.fields.certificado, "certificado")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.certificado,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "certificado" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "certificado",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "certificado",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "certificado", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("CERTIFICADO DIGITAL")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.fields.nota,
-                            expression: "fields.nota"
-                          }
-                        ],
-                        attrs: {
-                          type: "checkbox",
-                          "true-value": "nota",
-                          name: "nota"
-                        },
-                        domProps: {
-                          checked: Array.isArray(_vm.fields.nota)
-                            ? _vm._i(_vm.fields.nota, null) > -1
-                            : _vm._q(_vm.fields.nota, "nota")
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.fields.nota,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? "nota" : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "nota",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.fields,
-                                    "nota",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.fields, "nota", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("EMISSÃO DE NOTA FISCAL ELETRÔNICA")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
@@ -4827,6 +3493,674 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
+                            value: _vm.fields.auteracao,
+                            expression: "fields.auteracao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "auteracao",
+                          name: "auteracao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.auteracao)
+                            ? _vm._i(_vm.fields.auteracao, null) > -1
+                            : _vm._q(_vm.fields.auteracao, "auteracao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.auteracao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "auteracao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "auteracao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "auteracao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "auteracao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("ALTERAÇÃO DE NOME E SOBRENOME (APELIDO)")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.encerramento,
+                            expression: "fields.encerramento"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "encerramento",
+                          name: "encerramento"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.encerramento)
+                            ? _vm._i(_vm.fields.encerramento, null) > -1
+                            : _vm._q(_vm.fields.encerramento, "encerramento")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.encerramento,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "encerramento" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "encerramento",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "encerramento",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "encerramento", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("ALTERAÇÃO E ENCERRAMENTO DE MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.apostila,
+                            expression: "fields.apostila"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "apostila",
+                          name: "apostilamento"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.apostila)
+                            ? _vm._i(_vm.fields.apostila, null) > -1
+                            : _vm._q(_vm.fields.apostila, "apostila")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.apostila,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "apostila" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "apostila",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "apostila",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "apostila", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("APOSTILAMENTO DE HAIA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.autenticacao,
+                            expression: "fields.autenticacao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "autenticacao",
+                          name: "autenticacao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.autenticacao)
+                            ? _vm._i(_vm.fields.autenticacao, null) > -1
+                            : _vm._q(_vm.fields.autenticacao, "autenticacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.autenticacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "autenticacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "autenticacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "autenticacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "autenticacao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("AUTENTICAÇÃO DE DOCUMENTOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.certificado,
+                            expression: "fields.certificado"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "certificado",
+                          name: "certificado"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.certificado)
+                            ? _vm._i(_vm.fields.certificado, null) > -1
+                            : _vm._q(_vm.fields.certificado, "certificado")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.certificado,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "certificado" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certificado",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "certificado",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "certificado", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("CERTIFICADO DIGITAL")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.estadual,
+                            expression: "fields.estadual"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "estadual",
+                          name: "estadual"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.estadual)
+                            ? _vm._i(_vm.fields.estadual, null) > -1
+                            : _vm._q(_vm.fields.estadual, "estadual")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.estadual,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "estadual" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estadual",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "estadual",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "estadual", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO ESTADUAL"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.municipal,
+                            expression: "fields.municipal"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "municipal",
+                          name: "municipal"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.municipal)
+                            ? _vm._i(_vm.fields.municipal, null) > -1
+                            : _vm._q(_vm.fields.municipal, "municipal")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.municipal,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "municipal" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "municipal",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "municipal",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "municipal", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO MUNICIPAL"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.associacoes,
+                            expression: "fields.associacoes"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "associacoes",
+                          name: "associacoes"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.associacoes)
+                            ? _vm._i(_vm.fields.associacoes, null) > -1
+                            : _vm._q(_vm.fields.associacoes, "associacoes")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.associacoes,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "associacoes" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "associacoes",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "associacoes",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "associacoes", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE ASSOCIAÇÕES"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.igrejas,
+                            expression: "fields.igrejas"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "igrejas",
+                          name: "igrejas"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.igrejas)
+                            ? _vm._i(_vm.fields.igrejas, null) > -1
+                            : _vm._q(_vm.fields.igrejas, "igrejas")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.igrejas,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "igrejas" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "igrejas",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "igrejas",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "igrejas", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          " CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE IGREJAS"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.constituicao,
+                            expression: "fields.constituicao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "constituicao",
+                          name: "constituicao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.constituicao)
+                            ? _vm._i(_vm.fields.constituicao, null) > -1
+                            : _vm._q(_vm.fields.constituicao, "constituicao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.constituicao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "constituicao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "constituicao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "constituicao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "constituicao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("CONSTITUIÇÃO, ALTERAÇÃO E ENCERRAMENTO DE CNPJ")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.declaracao,
+                            expression: "fields.declaracao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "declaracao",
+                          name: "declaracao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.declaracao)
+                            ? _vm._i(_vm.fields.declaracao, null) > -1
+                            : _vm._q(_vm.fields.declaracao, "declaracao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.declaracao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "declaracao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "declaracao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "declaracao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "declaracao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("DECLARAÇÃO ANUAL DO MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.nota,
+                            expression: "fields.nota"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "nota",
+                          name: "nota"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.nota)
+                            ? _vm._i(_vm.fields.nota, null) > -1
+                            : _vm._q(_vm.fields.nota, "nota")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.nota,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "nota" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "nota",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "nota",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "nota", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DE NOTA FISCAL ELETRÔNICA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
                             value: _vm.fields.certidoes,
                             expression: "fields.certidoes"
                           }
@@ -4882,25 +4216,25 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.fields.viabilizacao,
-                            expression: "fields.viabilizacao"
+                            value: _vm.fields.impostos,
+                            expression: "fields.impostos"
                           }
                         ],
                         attrs: {
                           type: "checkbox",
-                          "true-value": "viabilizacao",
-                          name: "viabilizacao"
+                          "true-value": "impostos",
+                          name: "imposto"
                         },
                         domProps: {
-                          checked: Array.isArray(_vm.fields.viabilizacao)
-                            ? _vm._i(_vm.fields.viabilizacao, null) > -1
-                            : _vm._q(_vm.fields.viabilizacao, "viabilizacao")
+                          checked: Array.isArray(_vm.fields.impostos)
+                            ? _vm._i(_vm.fields.impostos, null) > -1
+                            : _vm._q(_vm.fields.impostos, "impostos")
                         },
                         on: {
                           change: function($event) {
-                            var $$a = _vm.fields.viabilizacao,
+                            var $$a = _vm.fields.impostos,
                               $$el = $event.target,
-                              $$c = $$el.checked ? "viabilizacao" : false
+                              $$c = $$el.checked ? "impostos" : false
                             if (Array.isArray($$a)) {
                               var $$v = null,
                                 $$i = _vm._i($$a, $$v)
@@ -4908,33 +4242,471 @@ var render = function() {
                                 $$i < 0 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "viabilizacao",
+                                    "impostos",
                                     $$a.concat([$$v])
                                   )
                               } else {
                                 $$i > -1 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "viabilizacao",
+                                    "impostos",
                                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                                   )
                               }
                             } else {
-                              _vm.$set(_vm.fields, "viabilizacao", $$c)
+                              _vm.$set(_vm.fields, "impostos", $$c)
                             }
                           }
                         }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA")
+                        _vm._v("ELABORAÇÃO DE IMPOSTO DE RENDA")
                       ]),
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
-                      _c("p", { staticClass: "font-weight-bold" }, [
-                        _vm._v("CORRESPONDENTE BANCÁRIO")
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.decore,
+                            expression: "fields.decore"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "decore",
+                          name: "decore"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.decore)
+                            ? _vm._i(_vm.fields.decore, null) > -1
+                            : _vm._q(_vm.fields.decore, "decore")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.decore,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "decore" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "decore",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "decore",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "decore", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DE DECORE")
                       ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.contrato,
+                            expression: "fields.contrato"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "contrato",
+                          name: "contrato"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.contrato)
+                            ? _vm._i(_vm.fields.contrato, null) > -1
+                            : _vm._q(_vm.fields.contrato, "contrato")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.contrato,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "contrato" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "contrato",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "contrato",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "contrato", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(
+                          "ELABORAÇÃO DE CONTRATO DE COMPRA E VENDA\n                                    E LOCAÇÃO"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.emicao,
+                            expression: "fields.emicao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "emicao",
+                          name: "emicao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.emicao)
+                            ? _vm._i(_vm.fields.emicao, null) > -1
+                            : _vm._q(_vm.fields.emicao, "emicao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.emicao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "emicao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "emicao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "emicao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "emicao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("EMISSÃO DO DAS DO MEI")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.guias,
+                            expression: "fields.guias"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "guias",
+                          name: "guias"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.guias)
+                            ? _vm._i(_vm.fields.guias, null) > -1
+                            : _vm._q(_vm.fields.guias, "guias")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.guias,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "guias" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "guias",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "guias",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "guias", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v(" EMISSÃO DE GUIAS DE IMPOSTOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.dividas,
+                            expression: "fields.dividas"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "dividas",
+                          name: "dividas"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.dividas)
+                            ? _vm._i(_vm.fields.dividas, null) > -1
+                            : _vm._q(_vm.fields.dividas, "dividas")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.dividas,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "dividas" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "dividas",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "dividas",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "dividas", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("NEGOCIAÇÕES DE DÍVIDAS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.protesto,
+                            expression: "fields.protesto"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "protesto",
+                          name: "protesto"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.protesto)
+                            ? _vm._i(_vm.fields.protesto, null) > -1
+                            : _vm._q(_vm.fields.protesto, "protesto")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.protesto,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "protesto" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "protesto",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "protesto",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "protesto", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA SPC, SERASA E PROTESTO")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.pontoscnh,
+                            expression: "fields.pontoscnh"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "pontoscnh",
+                          name: "pontoscnh"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.pontoscnh)
+                            ? _vm._i(_vm.fields.pontoscnh, null) > -1
+                            : _vm._q(_vm.fields.pontoscnh, "pontoscnh")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.pontoscnh,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "pontoscnh" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "pontoscnh",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "pontoscnh",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "pontoscnh", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA DE PONTOS DA CNH")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.debitos,
+                            expression: "fields.debitos"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "debitos",
+                          name: "debitos"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.debitos)
+                            ? _vm._i(_vm.fields.debitos, null) > -1
+                            : _vm._q(_vm.fields.debitos, "debitos")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.debitos,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "debitos" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "debitos",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "debitos",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "debitos", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("PESQUISA DE DÉBITOS DE VEÍCULOS")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -4992,36 +4764,31 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("br"),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "font-weight-bold" }, [
-                        _vm._v("SERVIÇOS GRÁFICOS")
-                      ]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.fields.folhetos,
-                            expression: "fields.folhetos"
+                            value: _vm.fields.juramentada,
+                            expression: "fields.juramentada"
                           }
                         ],
                         attrs: {
                           type: "checkbox",
-                          "true-value": "folhetos",
-                          name: "folhetos"
+                          "true-value": "juramentada",
+                          name: "juramentada"
                         },
                         domProps: {
-                          checked: Array.isArray(_vm.fields.folhetos)
-                            ? _vm._i(_vm.fields.folhetos, null) > -1
-                            : _vm._q(_vm.fields.folhetos, "folhetos")
+                          checked: Array.isArray(_vm.fields.juramentada)
+                            ? _vm._i(_vm.fields.juramentada, null) > -1
+                            : _vm._q(_vm.fields.juramentada, "juramentada")
                         },
                         on: {
                           change: function($event) {
-                            var $$a = _vm.fields.folhetos,
+                            var $$a = _vm.fields.juramentada,
                               $$el = $event.target,
-                              $$c = $$el.checked ? "folhetos" : false
+                              $$c = $$el.checked ? "juramentada" : false
                             if (Array.isArray($$a)) {
                               var $$v = null,
                                 $$i = _vm._i($$a, $$v)
@@ -5029,62 +4796,111 @@ var render = function() {
                                 $$i < 0 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "folhetos",
+                                    "juramentada",
                                     $$a.concat([$$v])
                                   )
                               } else {
                                 $$i > -1 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "folhetos",
+                                    "juramentada",
                                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                                   )
                               }
                             } else {
-                              _vm.$set(_vm.fields, "folhetos", $$c)
+                              _vm.$set(_vm.fields, "juramentada", $$c)
                             }
                           }
                         }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("TRADUÇÃO JURAMENTADA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.tramitacao,
+                            expression: "fields.tramitacao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "tramitacao",
+                          name: "TRAMITAÇÃO"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.tramitacao)
+                            ? _vm._i(_vm.fields.tramitacao, null) > -1
+                            : _vm._q(_vm.fields.tramitacao, "tramitacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.tramitacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "tramitacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "tramitacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "tramitacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "tramitacao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "TRAMITAÇÃO" } }, [
                         _vm._v(
-                          "CARTÃO DE VISITA, FOLDERS, FOLHETOS, CRACHÁS, BANNERS FOTOCÓPIAS"
+                          "TRAMITAÇÃO DE RNM (RNE), CPF E CARTEIRA DE TRABALHO"
                         )
                       ]),
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "font-weight-bold" }, [
-                        _vm._v("FOTOCÓPIAS")
-                      ]),
-                      _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.fields.xeros,
-                            expression: "fields.xeros"
+                            value: _vm.fields.bancaria,
+                            expression: "fields.bancaria"
                           }
                         ],
                         attrs: {
                           type: "checkbox",
-                          "true-value": "xeros",
-                          name: "xeros"
+                          "true-value": "bancaria",
+                          name: "bancaria"
                         },
                         domProps: {
-                          checked: Array.isArray(_vm.fields.xeros)
-                            ? _vm._i(_vm.fields.xeros, null) > -1
-                            : _vm._q(_vm.fields.xeros, "xeros")
+                          checked: Array.isArray(_vm.fields.bancaria)
+                            ? _vm._i(_vm.fields.bancaria, null) > -1
+                            : _vm._q(_vm.fields.bancaria, "bancaria")
                         },
                         on: {
                           change: function($event) {
-                            var $$a = _vm.fields.xeros,
+                            var $$a = _vm.fields.bancaria,
                               $$el = $event.target,
-                              $$c = $$el.checked ? "xeros" : false
+                              $$c = $$el.checked ? "bancaria" : false
                             if (Array.isArray($$a)) {
                               var $$v = null,
                                 $$i = _vm._i($$a, $$v)
@@ -5092,26 +4908,81 @@ var render = function() {
                                 $$i < 0 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "xeros",
+                                    "bancaria",
                                     $$a.concat([$$v])
                                   )
                               } else {
                                 $$i > -1 &&
                                   _vm.$set(
                                     _vm.fields,
-                                    "xeros",
+                                    "bancaria",
                                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                                   )
                               }
                             } else {
-                              _vm.$set(_vm.fields, "xeros", $$c)
+                              _vm.$set(_vm.fields, "bancaria", $$c)
                             }
                           }
                         }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "pesquisa" } }, [
-                        _vm._v("XÉROS E SCANNER")
+                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA")
+                      ]),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fields.viabilizacao,
+                            expression: "fields.viabilizacao"
+                          }
+                        ],
+                        attrs: {
+                          type: "checkbox",
+                          "true-value": "viabilizacao",
+                          name: "viabilizacao"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.fields.viabilizacao)
+                            ? _vm._i(_vm.fields.viabilizacao, null) > -1
+                            : _vm._q(_vm.fields.viabilizacao, "viabilizacao")
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.fields.viabilizacao,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? "viabilizacao" : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "viabilizacao",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "viabilizacao",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.fields, "viabilizacao", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "pesquisa" } }, [
+                        _vm._v("VIABILIZAÇÃO DE CONTA BANCÁRIA JURÍDICA")
                       ]),
                       _vm._v(" "),
                       _c("br")
